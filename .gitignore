@@ -17,3 +17,5 @@ desktop.ini
 
 *.bak
 *.backup
+
+/.env
