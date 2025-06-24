@@ -27,38 +27,32 @@ abstract class Route
 
     protected static function convertUriToRegex(string $uri): string 
     {
-        // Ana sayfa özel durumu
         if ($uri === '/') {
             return '#^/?$#';
         }
         
-        // Diğer route'lar için
-        $uri = trim($uri, '/'); // Başta ve sonda olan / karakterlerini kaldır
+        $uri = trim($uri, '/'); 
         $regex = preg_replace('#\{(\w+)\}#', '(?P<$1>[^/]+)', $uri);
         return '#^' . str_replace('/', '\/', $regex) . '/?$#';
     }
 
-    /**
-     * Gelen isteği karşıla ve ilgili controller@method'u çalıştır
-     */
+   
     public static function dispatch(string $method, string $uri) 
     {
         if (!isset(self::$routes[$method])) {
             return self::notFound($uri);
         }
 
-        // URI'yi normalize et
         $normalizedUri = trim($uri, '/');
         
-        foreach (self::$routes[$method] as $route) {
-            // Ana sayfa özel kontrolü
+        foreach (self::$routes[$method] as $route) 
+        {
             if ($route['original_uri'] === '/' && ($uri === '/' || $uri === '')) {
                 return self::executeController($route['options'], []);
             }
             
-            // Diğer route'lar için pattern matching
-            if (preg_match($route['pattern'], $normalizedUri, $matches)) {
-                // Named capture groups'ları al
+            if (preg_match($route['pattern'], $normalizedUri, $matches)) 
+            {
                 $params = array_filter(
                     $matches, 
                     fn($k) => !is_int($k), 
@@ -78,7 +72,6 @@ abstract class Route
             throw new \Exception("Route için 'uses' tanımı bulunmuyor.");
         }
 
-        // "Home@index" → ["Home", "index"]
         [$controllerPath, $action] = explode('@', $options['uses'], 2);
         $fqcn = 'App\Http\Controllers\\' . $controllerPath;
 
