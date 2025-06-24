@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Core\System\Controller;
 
-class Home 
+class Home extends Controller
 {
     public function index()
     {
-        return 'merhaba dünya';
+        return 'Hello world';
     }
 }
