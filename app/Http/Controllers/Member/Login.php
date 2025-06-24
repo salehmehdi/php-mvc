@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Member;
 
 use App\Core\System\View;
+use App\Core\System\Controller;
 
-class Login 
+class Login extends Controller
 {
     public function index()
     {
