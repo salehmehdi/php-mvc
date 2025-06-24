@@ -4,13 +4,17 @@ namespace App\Http\Controllers\Member;
 
 use App\Core\System\View;
 use App\Core\System\Controller;
+use App\Models\Member;
 
 class Login extends Controller
 {
     public function index()
     {
-        $name = 'Jhon';
-        $surname = 'Doe';
-        return View::make('member.login', ['name' => $name, 'surname' => $surname]);
+
+        $email = 'joendoe@gmail.com';
+        $member = Member::where('email', $email)->where('channel', 2)->first();
+        $member = $member ? $member : [];
+
+        return View::make('member.login', ['member' => $member]);
     }
 }
